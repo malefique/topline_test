@@ -1,5 +1,6 @@
 const { ValidationError } = require('../middleware/errors'),
-      config = require('../config');
+      config = require('../config'),
+      cache = require('./cache');
 
 module.exports = {
     async get(ctx) {
@@ -24,10 +25,20 @@ module.exports = {
             query = ctx.app.db('books').groupBy(group);
         }
 
-        let books = await query.limit(limit).offset(offset);
-        ctx.body = {
-            results: books
-        };
+        let cacheResults = await cache.get('books',ctx.query);
+
+        if(cacheResults !== null){
+            ctx.body = {
+                results: JSON.parse(cacheResults)
+            };
+        }
+        else{
+            let books = await query.limit(limit).offset(offset);
+            await cache.set('books', ctx.query, books, 10);
+            ctx.body = {
+                results: books
+            };
+        }
     },
 
     async add(ctx){

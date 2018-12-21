@@ -2,6 +2,8 @@
   "name": "topline",
   "version": "1.0.0",
   "dependencies": {
+    "async-redis": "^1.1.4",
+    "crypto": "^1.0.1",
     "faker": "^4.1.0",
     "knex": "^0.16.2",
     "koa": "^2.6.2",

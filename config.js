@@ -21,6 +21,11 @@ const config = {
         default: {
             group: 'created_at'
         }
+    },
+    redis: {
+        prefix: 'topline_',
+        time: 20,
+        server: {host:'127.0.0.1',port:6379}
     }
 };
 
